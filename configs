@@ -1,0 +1,15 @@
+PORTS:
+    users: 9090
+    eureka: 8761
+    config: 8888
+    hystrix: 9193
+    gateway: 8080
+
+ENV:
+    users:
+    eureka:
+        - EUREKA_SERVER_ADDRESS
+        - HOSTNAME
+    config:
+    hystrix:
+    gateway:

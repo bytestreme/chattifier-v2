@@ -1,0 +1,40 @@
+plugins {
+    id 'com.palantir.docker' version '0.25.0'
+    id 'org.springframework.boot' version '2.4.8'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1'
+sourceCompatibility = '11'
+def dockerUser = 'shynggys'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "2020.0.3")
+}
+
+dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-config-server'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+docker {
+    name "${dockerUser}/${group}.${bootJar.baseName}"
+    tags "${version}"
+    dockerfile file("Dockerfile")
+    files bootJar.archivePath
+    buildArgs "JAR_FILE": "${bootJar.baseName}-${bootJar.version}.jar"
+}
+
+tasks.docker.dependsOn 'build'

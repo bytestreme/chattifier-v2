@@ -1,0 +1,13 @@
+rootProject.name = 'chattifier-v2'
+
+include ':cloud-gateway'
+project(':cloud-gateway').projectDir = file('./cloud-gateway')
+
+include ':service-registry'
+project(':service-registry').projectDir = file('./service-registry')
+
+include ':config-server'
+project(':config-server').projectDir = file('./config-server')
+
+include ':user-service'
+project(':user-service').projectDir = file('./user-service')
