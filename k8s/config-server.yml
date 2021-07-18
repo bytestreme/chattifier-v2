@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-config-server-app
+  labels:
+    app: cloud-config-server-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-config-server-app
+  template:
+    metadata:
+      labels:
+        app: cloud-config-server-app
+    spec:
+      containers:
+        - name: cloud-config-server-app
+          image: shynggys/com.example.config-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8888
+          env:
+            - name: GIT_CONFIG_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: cloud-config-cm
+                  key: GIT_CONFIG_URI
+            - name: EUREKA_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: EUREKA_SERVICE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-config-server-svc
+spec:
+  ports:
+    - targetPort: 8888
+      port: 80
+  selector:
+    app: cloud-config-server-app
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloud-config-cm
+data:
+  GIT_CONFIG_URI: https://github.com/shabbirdwd53/config-server
+  CONFIG_SERVER_URI: http://cloud-config-0.cloud-config.default.svc.cluster.local:8888
+  CONFIG_SERVER_ENABLED: true
