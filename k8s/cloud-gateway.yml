@@ -26,11 +26,21 @@ spec:
                 configMapKeyRef:
                   name: eureka-cm
                   key: EUREKA_SERVICE_URL
+            - name: EUREKA_SERVER_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: EUREKA_SERVER_ENABLED
             - name: CONFIG_SERVER_URI
               valueFrom:
                 configMapKeyRef:
                   name: cloud-config-cm
                   key: CONFIG_SERVER_URI
+            - name: CONFIG_SERVER_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: cloud-config-cm
+                  key: CONFIG_SERVER_ENABLED
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
