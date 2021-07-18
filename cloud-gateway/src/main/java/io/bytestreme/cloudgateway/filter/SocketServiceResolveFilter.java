@@ -1,18 +1,15 @@
 package io.bytestreme.cloudgateway.filter;
 
 import io.bytestreme.cloudgateway.service.UserResolvingService;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
-import org.springframework.cloud.gateway.filter.GatewayFilterChain;
-import org.springframework.cloud.gateway.filter.RouteToRequestUrlFilter;
+import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
-import org.springframework.core.Ordered;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
-import org.springframework.web.server.ServerWebExchange;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -20,7 +17,13 @@ import java.net.URISyntaxException;
 import java.security.Principal;
 
 @Slf4j
-public class SocketServiceResolveFilter implements GatewayFilter, Ordered {
+@Component
+public class SocketServiceResolveFilter extends AbstractGatewayFilterFactory<SocketServiceResolveFilter.Config> {
+
+    @Override
+    public Class<Config> getConfigClass() {
+        return SocketServiceResolveFilter.Config.class;
+    }
 
     @Value("${nameRegistry.socketApi}")
     private String socketApiServiceName;
@@ -36,14 +39,8 @@ public class SocketServiceResolveFilter implements GatewayFilter, Ordered {
 
 
     @Override
-    public int getOrder() {
-        return RouteToRequestUrlFilter.ROUTE_TO_URL_FILTER_ORDER + 1;
-    }
-
-    @Override
-    @SneakyThrows
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        return userResolvingService
+    public GatewayFilter apply(Config config) {
+        return (exchange, chain) -> userResolvingService
                 .getCurrentAuthentication()
                 .map(Principal::getName)
                 .flatMap(uid -> redisTemplate.opsForHash().get(socketApiServiceName, uid))
@@ -74,4 +71,7 @@ public class SocketServiceResolveFilter implements GatewayFilter, Ordered {
     }
 
 
+    public static class Config {
+
+    }
 }

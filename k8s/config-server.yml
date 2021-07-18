@@ -49,6 +49,6 @@ kind: ConfigMap
 metadata:
   name: cloud-config-cm
 data:
-  GIT_CONFIG_URI: https://github.com/shabbirdwd53/config-server
-  CONFIG_SERVER_URI: http://cloud-config-0.cloud-config.default.svc.cluster.local:8888
-  CONFIG_SERVER_ENABLED: true
+  GIT_CONFIG_URI: "https://github.com/shabbirdwd53/config-server"
+  CONFIG_SERVER_URI: "http://cloud-config-0.cloud-config.default.svc.cluster.local:8888"
+  CONFIG_SERVER_ENABLED: "true"

@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: eureka-cm
 data:
-  eureka_service_address: http://eureka-0.eureka:8761/eureka
-  EUREKA_SERVICE_URL: http://eureka-0.eureka.default.svc.cluster.local:8761/eureka
-  EUREKA_SERVER_ENABLED: true
+  eureka_service_address: "http://eureka-0.eureka:8761/eureka"
+  EUREKA_SERVICE_URL: "http://eureka-0.eureka.default.svc.cluster.local:8761/eureka"
+  EUREKA_SERVER_ENABLED: "true"
 ---
 
 apiVersion: v1

@@ -31,6 +31,16 @@ spec:
                 configMapKeyRef:
                   name: cloud-config-cm
                   key: CONFIG_SERVER_URI
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-cm
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-cm
+                  key: REDIS_PORT
 
 ---
 apiVersion: v1
