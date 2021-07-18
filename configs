@@ -1,9 +1,10 @@
 PORTS:
-    users: 9090
+    users: 8081
     eureka: 8761
     config: 8888
     hystrix: 9193
     gateway: 8080
+    socket-api: 8082
 
 ENV:
     users:

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-cm
+data:
+  CLOUD_REGION: eu-central-1
+  DATABASE_ID: 93c15b57-e663-4838-9665-54ad030cacf1
+  KEYSPACE: chat_ks
+  APPLICATION_TOKEN: AstraCS:ygCwiBlOLZNTzbiQlzmrpZJG:476d27733f7bfebc85472fa9fc15c0489ed002e4c1df7b397dfa08f271f3d0fb

@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socket-api-app
+  labels:
+    app: socket-api-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: socket-api-app
+  template:
+    metadata:
+      labels:
+        app: socket-api-app
+    spec:
+      containers:
+        - name: socket-api-app
+          image: shynggys/io.bytestreme.socket-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+          env:
+            - name: CONFIG_SERVER_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: cloud-config-cm
+                  key: CONFIG_SERVER_URI
+            - name: EUREKA_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: EUREKA_SERVICE_URL
+            - name: CONFIG_SERVER_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: cloud-config-cm
+                  key: CONFIG_SERVER_ENABLED
+            - name: EUREKA_SERVER_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: EUREKA_SERVER_ENABLED
+            - name: PULSAR_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: socket-api-cm
+                  key: PULSAR_SERVICE_URL
+            - name: PULSAR_AUTHENTICATION
+              valueFrom:
+                configMapKeyRef:
+                  name: socket-api-cm
+                  key: PULSAR_AUTHENTICATION
+            - name: PULSAR_TENANT
+              valueFrom:
+                configMapKeyRef:
+                  name: socket-api-cm
+                  key: PULSAR_TENANT
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: socket-api-svc
+spec:
+  selector:
+    app: socket-api-app
+  ports:
+    - port: 80
+      targetPort: 8082
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: socket-api-cm
+data:
+  PULSAR_SERVICE_URL: "pulsar+ssl://pulsar-gcp-useast4.streaming.datastax.com:6651"
+  PULSAR_AUTHENTICATION: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbGllbnQ7OTQyZWJiNTktNDQxNC00MGNjLWE0NTktYmJkMjgyN2NhNTVkO2RHNXVkQT09In0.twaKQ-Q6RSH-nIjrgC9Uqpsb02u_v0uYSqoxctASEvJm2MC__9B3u7GSn9X_URQQeBIPtQyKMyR_fOr8WLQXlWI9-QH-sfRSsvtQ3BqLOSh9czOJEWhUXekmcFXG8NK3E6RRB4pQtpSgOi9qMt2kL-Kox2fdbtLmsTuAB0DvjoIp_liF10ST9Pja_aRRO9WS_tCJYwv-rQI4IDB40gZPeC6_qW0uVogh_dqnZtIQ7HnR_2kSNfWkvncDaes6IdN-ehL2phm8bwz8VBxmbmAadN-nZmt9553nRXERcjFuKhSdEPqJCJ9-p4qKq81dvEtbedOaLvl22irvOd-7USsYWA"
+  PULSAR_TENANT: "tnnt"
