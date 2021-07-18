@@ -15,6 +15,14 @@ spring:
               args:
                 name: USER-SERVICE
                 fallbackuri: forward:/userServiceFallBack
+        - id: SOCKET-API
+          predicates:
+            - Path=/api/**
+          filters:
+            - AuthFilter
+            args:
+              name: SOCKET-API
+              fallbackuri: forward:/socketApiFallBack
 #        - id: DEPARTMENT-SERVICE
 #          uri: lb://DEPARTMENT-SERVICE
 #          predicates:
@@ -52,3 +60,10 @@ eureka:
     service-url:
       defaultZone: ${EUREKA_SERVICE_URL}
 
+nameRegistry:
+  socketApi: socket-api
+
+
+redis:
+  host: ${REDIS_CONFIG:localhost}
+  port: ${REDIS_PORT:6379}

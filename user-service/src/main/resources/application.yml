@@ -1,16 +1,33 @@
 server:
   port: 8081
+  error:
+    include-message: always
 
 spring:
   application:
     name: USER-SERVICE
+
 
 eureka:
   instance:
     prefer-ip-address: true
     hostname: eureka-0
   client:
-    register-with-eureka: true
-    fetch-registry: true
+    register-with-eureka: ${EUREKA_SERVER_ENABLED:false}
+    fetch-registry: ${EUREKA_SERVER_ENABLED:false}
     service-url:
       defaultZone: ${EUREKA_SERVICE_URL}
+
+astra:
+  cloud-region: "eu-central-1"
+  database-id: "93c15b57-e663-4838-9665-54ad030cacf1"
+  keyspace: "chat_ks"
+  client-id: "ZWuuHiEWQBykPibuchLmBbJR"
+  client-secret: ",mOd,EhH7-MUfzKZPUiwYZR5Sner_PjA,,iAqjSqK23jUzy.xg_M1yRepqxAZ,jw7y7f172R3FysD+2AOBZkawoRlgbmrL3ME2_WZNQQScLX+UjueboT1OmirnA9c36t"
+  application-token: "AstraCS:ZWuuHiEWQBykPibuchLmBbJR:2fd8f9a1d48bc389d2abce20c40f4a75003584921e1a07b5616b27a2907fdbfe"
+logging:
+  level:
+    root: INFO
+#    io:
+#      bytestreme:
+#        userservice: DEBUG

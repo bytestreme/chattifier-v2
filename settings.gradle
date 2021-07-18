@@ -11,3 +11,7 @@ project(':config-server').projectDir = file('./config-server')
 
 include ':user-service'
 project(':user-service').projectDir = file('./user-service')
+
+include ':socket-api'
+project(':socket-api').projectDir = file('./socket-api')
+

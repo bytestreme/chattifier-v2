@@ -14,4 +14,9 @@ public class FallBackMethodController {
         return Collections.emptyMap();
     }
 
+    @GetMapping("/socketApiFallBack")
+    public Map<String, String> socketApiFallBackMethod() {
+        return Collections.emptyMap();
+    }
+
 }
