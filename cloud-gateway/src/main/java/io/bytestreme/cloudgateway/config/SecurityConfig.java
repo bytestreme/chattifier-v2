@@ -15,13 +15,9 @@ public class SecurityConfig {
         return http.cors().disable()
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("api/**")
+                .anyExchange()
                 .permitAll()
                 .and()
-                .formLogin()
-                .disable()
-                .httpBasic()
-                .disable()
                 .build();
     }
 }

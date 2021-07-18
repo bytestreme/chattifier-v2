@@ -20,10 +20,9 @@ spring:
           predicates:
             - Path=/api/**
           filters:
-            - SocketServiceResolveFilter
-#            args:
-#              name: SOCKET-API
-#              fallbackuri: forward:/socketApiFallBack
+            args:
+              name: SOCKET-API
+              fallbackuri: forward:/socketApiFallBack
 #        - id: DEPARTMENT-SERVICE
 #          uri: lb://DEPARTMENT-SERVICE
 #          predicates:

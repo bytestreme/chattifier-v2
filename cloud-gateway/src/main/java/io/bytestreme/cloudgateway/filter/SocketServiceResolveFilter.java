@@ -16,8 +16,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
 
-@Slf4j
-@Component
+//@Slf4j
+//@Component
 public class SocketServiceResolveFilter extends AbstractGatewayFilterFactory<SocketServiceResolveFilter.Config> {
 
     @Override
@@ -55,7 +55,7 @@ public class SocketServiceResolveFilter extends AbstractGatewayFilterFactory<Soc
                     try {
                         exchange.getAttributes().put(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR, new URI(urlString));
                     } catch (URISyntaxException e) {
-                        log.error(e.getMessage());
+//                        log.error(e.getMessage());
                     }
                     return chain.filter(exchange);
                 });
