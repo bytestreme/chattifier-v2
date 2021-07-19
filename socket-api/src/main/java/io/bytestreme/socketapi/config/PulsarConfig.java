@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+import java.util.UUID;
+
 @Slf4j
 @Configuration
 public class PulsarConfig {
@@ -48,7 +50,7 @@ public class PulsarConfig {
 
         return client.newConsumer()
                 .topic("tnnt/default/my-topic")
-                .subscriptionName("my-subscription")
+                .subscriptionName("socket_consumer_" + UUID.randomUUID())
                 .subscriptionType(SubscriptionType.Shared)
                 .messageListener(messageListener)
                 .subscribe();

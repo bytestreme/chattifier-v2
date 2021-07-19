@@ -17,7 +17,7 @@ public class ProducerService {
 
     @PostConstruct
     public void init() {
-        IntStream.range(0, 150).forEach(i -> {
+        IntStream.range(0, 10).forEach(i -> {
             String content = String.format("hi-pulsar-%d", i);
             try {
                 log.info("producer sent: " + content);
