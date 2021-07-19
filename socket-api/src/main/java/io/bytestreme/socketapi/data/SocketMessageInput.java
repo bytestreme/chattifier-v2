@@ -8,5 +8,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SocketMessageInput {
-    private String data;
+
+    private byte[] data;
+    private int type;
+
+    public static class InputEventType {
+        public static final int MESSAGE = -1;
+
+    }
 }
+

@@ -8,9 +8,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SocketMessageOutput {
-    private String data;
 
-    public static SocketMessageOutput pong() {
-        return new SocketMessageOutput("pong");
+    private byte[] data;
+    private int type;
+
+    public static class OutputEventType {
+        public static final int MESSAGE = 1;
+        public static final int OK = 2;
+        public static final int NOK = 4;
+
+        public static int ackIfNull(Object obj) {
+            return obj == null ? NOK : OK;
+        }
     }
+
 }

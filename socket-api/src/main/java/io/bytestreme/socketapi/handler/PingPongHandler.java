@@ -5,6 +5,7 @@ import io.bytestreme.socketapi.data.SocketMessageOutput;
 import io.bytestreme.socketapi.service.WebSocketMessageMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pulsar.client.api.Producer;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
@@ -21,6 +22,7 @@ import javax.annotation.Nonnull;
 public class PingPongHandler implements WebSocketHandler {
 
     private final WebSocketMessageMapper mapper;
+    private final Producer<byte[]> producer;
 
     @Override
     @Nonnull
@@ -38,7 +40,17 @@ public class PingPongHandler implements WebSocketHandler {
     }
 
     private Flux<SocketMessageOutput> handle(Flux<SocketMessageInput> inputFlux) {
-        return inputFlux.map(x -> SocketMessageOutput.pong());
+        return inputFlux
+                .flatMap(
+                        in -> Mono.fromFuture(producer.sendAsync(in.getData()))
+
+                )
+                .map(
+                        x -> new SocketMessageOutput(
+                                null,
+                                SocketMessageOutput.OutputEventType.ackIfNull(x)
+                        )
+                );
     }
 
 }
