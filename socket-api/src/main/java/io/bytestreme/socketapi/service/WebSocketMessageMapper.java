@@ -1,7 +1,7 @@
 package io.bytestreme.socketapi.service;
 
-import io.bytestreme.socketapi.data.SocketMessageInput;
-import io.bytestreme.socketapi.data.SocketMessageOutput;
+import io.bytestreme.socketapi.data.ws.SocketEventInput;
+import io.bytestreme.socketapi.data.ws.SocketEventOutput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
@@ -23,19 +23,19 @@ public class WebSocketMessageMapper {
     private final Jackson2JsonEncoder encoder;
     private final Jackson2JsonDecoder decoder;
 
-    public Flux<SocketMessageInput> decode(Flux<DataBuffer> inbound) {
+    public Flux<SocketEventInput> decode(Flux<DataBuffer> inbound) {
         return inbound.flatMap(p -> decoder.decode(
                 Mono.just(p),
                 ResolvableType.forType(
-                        new ParameterizedTypeReference<SocketMessageInput>() {
+                        new ParameterizedTypeReference<SocketEventInput>() {
                         }),
                 MediaType.APPLICATION_JSON,
                 Collections.emptyMap()
         ))
-                .map(o -> (SocketMessageInput) o);
+                .map(o -> (SocketEventInput) o);
     }
 
-    public Flux<DataBuffer> encode(Flux<SocketMessageOutput> outbound, DataBufferFactory dataBufferFactory) {
+    public Flux<DataBuffer> encode(Flux<SocketEventOutput> outbound, DataBufferFactory dataBufferFactory) {
         return outbound
                 .flatMap(i -> encoder
                         .encode(

@@ -1,11 +1,11 @@
 package io.bytestreme.socketapi.handler;
 
-import io.bytestreme.socketapi.data.SocketMessageInput;
-import io.bytestreme.socketapi.data.SocketMessageOutput;
+import io.bytestreme.socketapi.data.ws.SocketEventInput;
+import io.bytestreme.socketapi.data.ws.SocketEventOutput;
+import io.bytestreme.socketapi.service.ProducerService;
 import io.bytestreme.socketapi.service.WebSocketMessageMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.client.api.Producer;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 public class PingPongHandler implements WebSocketHandler {
 
     private final WebSocketMessageMapper mapper;
-    private final Producer<byte[]> producer;
+    private final ProducerService producerService;
 
     @Override
     @Nonnull
@@ -39,18 +39,8 @@ public class PingPongHandler implements WebSocketHandler {
                 .as(session::send);
     }
 
-    private Flux<SocketMessageOutput> handle(Flux<SocketMessageInput> inputFlux) {
-        return inputFlux
-                .flatMap(
-                        in -> Mono.fromFuture(producer.sendAsync(in.getData()))
-
-                )
-                .map(
-                        x -> new SocketMessageOutput(
-                                null,
-                                SocketMessageOutput.OutputEventType.ackIfNull(x)
-                        )
-                );
+    private Flux<SocketEventOutput> handle(Flux<SocketEventInput> inputFlux) {
+        return producerService.produceSocketEvent(inputFlux);
     }
 
 }

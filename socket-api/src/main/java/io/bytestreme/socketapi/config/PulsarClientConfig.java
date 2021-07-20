@@ -1,8 +1,10 @@
 package io.bytestreme.socketapi.config;
 
+import io.bytestreme.socketapi.data.pulsar.PulsarMessageInputEvent;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.*;
+import org.apache.pulsar.client.api.schema.SchemaDefinition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +14,7 @@ import java.util.UUID;
 
 @Slf4j
 @Configuration
-public class PulsarConfig {
+public class PulsarClientConfig {
 
     private static final String SOCKET_CONSUMER_PREFIX = "socket_consumer_";
 
