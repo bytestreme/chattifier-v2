@@ -15,3 +15,6 @@ project(':user-service').projectDir = file('./user-service')
 include ':socket-api'
 project(':socket-api').projectDir = file('./socket-api')
 
+include ':chat-service'
+project(':chat-service').projectDir = file('./chat-service')
+

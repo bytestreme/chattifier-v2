@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-service-app
+  labels:
+    app: chat-service-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-service-app
+  template:
+    metadata:
+      labels:
+        app: chat-service-app
+    spec:
+      containers:
+        - name: chat-service-app
+          image: shynggys/io.bytestreme.chat-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8085
+          env:
+            - name: CONFIG_SERVER_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: cloud-config-cm
+                  key: CONFIG_SERVER_URI
+            - name: EUREKA_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: EUREKA_SERVICE_URL
+            - name: CONFIG_SERVER_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: cloud-config-cm
+                  key: CONFIG_SERVER_ENABLED
+            - name: EUREKA_SERVER_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: EUREKA_SERVER_ENABLED
+            - name: PULSAR_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: socket-api-cm
+                  key: PULSAR_SERVICE_URL
+            - name: PULSAR_AUTHENTICATION
+              valueFrom:
+                configMapKeyRef:
+                  name: socket-api-cm
+                  key: PULSAR_AUTHENTICATION
+            - name: PULSAR_TENANT
+              valueFrom:
+                configMapKeyRef:
+                  name: socket-api-cm
+                  key: PULSAR_TENANT
+            - name: PULSAR_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: socket-api-cm
+                  key: PULSAR_TOPIC
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: chat-service-svc
+spec:
+  selector:
+    app: chat-service-app
+  ports:
+    - port: 80
+      targetPort: 8085
+
+---
