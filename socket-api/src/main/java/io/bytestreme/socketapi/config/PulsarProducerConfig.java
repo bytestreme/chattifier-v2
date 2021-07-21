@@ -25,20 +25,6 @@ public class PulsarProducerConfig {
     @Value("${pulsar.topic}")
     private String topic;
 
-    @Bean(name = "pulsarProducerMap")
-    public Map<Integer, Producer<? extends AbstractPulsarEvent>>
-    pulsarProducerMap(List<Producer<? extends AbstractPulsarEvent>> services) {
-        log.warn("services " + services.stream().map(Producer::getProducerName).collect(Collectors.toList()));
-        return services.stream()
-                .collect(
-                        Collectors
-                                .toMap(
-                                        p -> Integer.valueOf(p.getProducerName()),
-                                        s -> s
-                                )
-                );
-    }
-
     @SneakyThrows
     @Bean(destroyMethod = "close")
     public Producer<PulsarMessageInputEvent> messageInputProducer(PulsarClient client) {
