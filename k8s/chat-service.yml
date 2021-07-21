@@ -44,23 +44,28 @@ spec:
             - name: PULSAR_SERVICE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: socket-api-cm
+                  name: pulsar-cm
                   key: PULSAR_SERVICE_URL
             - name: PULSAR_AUTHENTICATION
               valueFrom:
                 configMapKeyRef:
-                  name: socket-api-cm
+                  name: pulsar-cm
                   key: PULSAR_AUTHENTICATION
             - name: PULSAR_TENANT
               valueFrom:
                 configMapKeyRef:
-                  name: socket-api-cm
+                  name: pulsar-cm
                   key: PULSAR_TENANT
-            - name: PULSAR_TOPIC
+            - name: PULSAR_TOPIC_IN_MESSAGES_IN_MESSAGES
               valueFrom:
                 configMapKeyRef:
-                  name: socket-api-cm
-                  key: PULSAR_TOPIC
+                  name: pulsar-cm
+                  key: PULSAR_TOPIC_IN_MESSAGES_IN_MESSAGES
+            - name: PULSAR_TOPIC_MESSAGES_OUT_NON_PERSISTENT
+              valueFrom:
+                configMapKeyRef:
+                  name: pulsar-cm
+                  key: PULSAR_TOPIC_MESSAGES_OUT_NON_PERSISTENT
 
 ---
 
@@ -75,4 +80,3 @@ spec:
     - port: 80
       targetPort: 8085
 
----

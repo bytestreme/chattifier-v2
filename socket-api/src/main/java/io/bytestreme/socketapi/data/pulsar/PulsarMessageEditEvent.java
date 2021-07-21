@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class PulsarMessageEditEvent extends AbstractPulsarEvent{
+public class PulsarMessageEditEvent extends AbstractPulsarEvent {
 
     private UUID sender;
     private UUID room;

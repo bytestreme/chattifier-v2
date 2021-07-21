@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: CHAT-SERVICE
+
+server:
+  port: 8085
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: eureka-0
+  client:
+    register-with-eureka: ${EUREKA_SERVER_ENABLED:false}
+    fetch-registry: ${EUREKA_SERVER_ENABLED:false}
+    service-url:
+      defaultZone: ${EUREKA_SERVICE_URL}
+
+
+pulsar:
+  service-url: ${PULSAR_SERVICE_URL:pulsar+ssl://pulsar-gcp-useast4.streaming.datastax.com:6651}
+  authentication: ${PULSAR_AUTHENTICATION:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbGllbnQ7OTQyZWJiNTktNDQxNC00MGNjLWE0NTktYmJkMjgyN2NhNTVkO2RHNXVkQT09In0.twaKQ-Q6RSH-nIjrgC9Uqpsb02u_v0uYSqoxctASEvJm2MC__9B3u7GSn9X_URQQeBIPtQyKMyR_fOr8WLQXlWI9-QH-sfRSsvtQ3BqLOSh9czOJEWhUXekmcFXG8NK3E6RRB4pQtpSgOi9qMt2kL-Kox2fdbtLmsTuAB0DvjoIp_liF10ST9Pja_aRRO9WS_tCJYwv-rQI4IDB40gZPeC6_qW0uVogh_dqnZtIQ7HnR_2kSNfWkvncDaes6IdN-ehL2phm8bwz8VBxmbmAadN-nZmt9553nRXERcjFuKhSdEPqJCJ9-p4qKq81dvEtbedOaLvl22irvOd-7USsYWA}
+  tenant: ${PULSAR_TENANT:tnnt}
+  topic: ${PULSAR_TOPIC_IN_MESSAGES_IN_MESSAGES:persistent://tnnt/default/my-topic}
+  topicRealTime: ${PULSAR_TOPIC_MESSAGES_OUT_NON_PERSISTENT:non-persistent://tnnt/default/real-time}
