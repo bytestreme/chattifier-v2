@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MessageSocketEvent extends AbstractSocketEvent {
+public class MessageInSocketEvent extends AbstractSocketEvent {
 
     private UUID room;
     private String text;

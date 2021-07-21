@@ -1,11 +1,11 @@
 package io.bytestreme.socketapi.service.decode;
 
 import io.bytestreme.socketapi.data.ws.SocketEventInput;
-import io.bytestreme.socketapi.data.ws.input.MessageSocketEvent;
+import io.bytestreme.socketapi.data.ws.input.MessageInSocketEvent;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SocketMessageEventDecoder extends SocketDecodeService<MessageSocketEvent> {
+public class SocketMessageInEventDecoder extends SocketDecodeService<MessageInSocketEvent> {
 
     @Override
     public int getEventTypeCode() {
@@ -13,8 +13,8 @@ public class SocketMessageEventDecoder extends SocketDecodeService<MessageSocket
     }
 
     @Override
-    Class<MessageSocketEvent> getType() {
-        return MessageSocketEvent.class;
+    Class<MessageInSocketEvent> getType() {
+        return MessageInSocketEvent.class;
     }
 
 }

@@ -14,7 +14,7 @@ public class SocketEventInput {
 
     public static class InputEventType {
         public static final int MESSAGE_IN = -1;
-        public static final int MESSAGE_EDIT = -1;
+        public static final int MESSAGE_EDIT = -2;
     }
 }
 

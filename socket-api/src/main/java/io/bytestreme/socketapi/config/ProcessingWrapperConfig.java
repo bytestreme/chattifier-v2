@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class ProcessingWrapperConfig {
 
     private static final Integer[] DECLARED_SERVICES = new Integer[]{
-            SocketEventInput.InputEventType.MESSAGE_IN
+            SocketEventInput.InputEventType.MESSAGE_IN, SocketEventInput.InputEventType.MESSAGE_EDIT
     };
 
     @Bean(name = "processingWrapperConfigMap")

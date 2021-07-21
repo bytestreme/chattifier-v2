@@ -1,6 +1,6 @@
 package io.bytestreme.socketapi.service;
 
-import io.bytestreme.socketapi.data.pulsar.mapper.MessageEventMapper;
+import io.bytestreme.socketapi.data.pulsar.mapper.MessageInEventMapper;
 import io.bytestreme.socketapi.data.ws.SocketEventInput;
 import io.bytestreme.socketapi.data.ws.SocketEventOutput;
 import io.bytestreme.socketapi.util.ProcessingWrapper;
@@ -20,7 +20,7 @@ public class ProducerService {
 
     private final BeanFactory beanFactory;
     private final Map<Integer, ProcessingWrapper> processingWrapperConfigMap;
-    private final MessageEventMapper messageEventMapper;
+    private final MessageInEventMapper messageInEventMapper;
     private final SocketBytesDecoderService bytesDecoderService;
 
     public Flux<SocketEventOutput> produceSocketEvent(Flux<SocketEventInput> inputFlux) {
