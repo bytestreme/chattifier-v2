@@ -1,8 +1,10 @@
 package io.bytestreme.chatservice.config;
 
+import io.bytestreme.data.pulsar.event.PulsarMessageInputEvent;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.*;
+import org.apache.pulsar.client.api.schema.SchemaDefinition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,18 +42,22 @@ public class PulsarConfig {
 
     @SneakyThrows
     @Bean(destroyMethod = "close")
-    public Consumer<byte[]> consumer(PulsarClient client) {
-        MessageListener<byte[]> messageListener = (consumer, msg) -> {
+    public Consumer<PulsarMessageInputEvent> consumer(PulsarClient client) {
+        MessageListener<PulsarMessageInputEvent> messageListener = (consumer, msg) -> {
             try {
-                log.info("consumer msg: " + new String(msg.getData()));
+                log.info("consumer msg: " + msg.getValue().getContent());
                 consumer.acknowledge(msg);
             } catch (Exception e) {
                 consumer.negativeAcknowledge(msg);
                 log.error(e.getMessage());
             }
         };
+        SchemaDefinition<PulsarMessageInputEvent> schemaDefinition = SchemaDefinition
+                .<PulsarMessageInputEvent>builder()
+                .withPojo(PulsarMessageInputEvent.class)
+                .build();
 
-        return client.newConsumer()
+        return client.<PulsarMessageInputEvent>newConsumer(Schema.JSON(schemaDefinition))
                 .topic(topic)
                 .subscriptionName(SOCKET_CONSUMER_PREFIX + UUID.randomUUID())
                 .subscriptionType(SubscriptionType.Shared)

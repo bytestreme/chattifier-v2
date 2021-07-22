@@ -34,6 +34,8 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
     implementation 'org.apache.pulsar:pulsar-client:2.7.2'
 
+    compile project(":pulsar-data")
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 }

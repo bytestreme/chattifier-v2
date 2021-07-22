@@ -1,0 +1,8 @@
+plugins {
+    id 'java'
+}
+
+group = 'io.bytestreme'
+version = '0.0.1'
+sourceCompatibility = '11'
+
