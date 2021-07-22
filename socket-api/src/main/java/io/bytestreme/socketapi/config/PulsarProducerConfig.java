@@ -1,7 +1,7 @@
 package io.bytestreme.socketapi.config;
 
-import io.bytestreme.socketapi.data.pulsar.PulsarMessageEditEvent;
-import io.bytestreme.socketapi.data.pulsar.PulsarMessageInputEvent;
+import io.bytestreme.data.pulsar.event.PulsarMessageEditEvent;
+import io.bytestreme.data.pulsar.event.PulsarMessageInputEvent;
 import io.bytestreme.socketapi.data.ws.SocketEventInput;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

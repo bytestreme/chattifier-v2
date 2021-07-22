@@ -25,6 +25,7 @@ ext {
     set('springCloudVersion', "2020.0.0")
 }
 
+
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
@@ -37,6 +38,8 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    compile project(":pulsar-data")
 
     implementation 'org.apache.pulsar:pulsar-client:2.7.2'
 }

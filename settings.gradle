@@ -18,5 +18,6 @@ project(':socket-api').projectDir = file('./socket-api')
 include ':chat-service'
 project(':chat-service').projectDir = file('./chat-service')
 
-include ':pulsar-models'
-project(':pulsar-models').projectDir = file('./pulsar-models')
+include ':pulsar-data'
+project(':pulsar-data').projectDir = file('./pulsar-data')
+
