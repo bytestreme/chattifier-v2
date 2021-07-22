@@ -2,6 +2,7 @@ package io.bytestreme.socketapi.config;
 
 
 import io.bytestreme.data.pulsar.AbstractPulsarEvent;
+import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.socketapi.data.pulsar.mapper.SocketToPulsarEventMapper;
 import io.bytestreme.socketapi.data.ws.AbstractSocketEvent;
 import io.bytestreme.socketapi.data.ws.SocketEventInput;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 public class ProcessingWrapperConfig {
 
     private static final Integer[] DECLARED_SERVICES = new Integer[]{
-            SocketEventInput.InputEventType.MESSAGE_IN, SocketEventInput.InputEventType.MESSAGE_EDIT
+            PulsarTypeCodes.InputEventType.MESSAGE_IN, PulsarTypeCodes.InputEventType.MESSAGE_EDIT
     };
 
     @Bean(name = "processingWrapperConfigMap")
@@ -36,7 +37,7 @@ public class ProcessingWrapperConfig {
                 .collect(
                         Collectors
                                 .toMap(
-                                        p -> Integer.valueOf(p.getProducerName()),
+                                        p -> Integer.valueOf(p.getProducerName().substring(p.getProducerName().indexOf("__") + 2)),
                                         s -> s
                                 )
                 );

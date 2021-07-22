@@ -1,5 +1,6 @@
 package io.bytestreme.socketapi.service.decode;
 
+import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.socketapi.data.ws.SocketEventInput;
 import io.bytestreme.socketapi.data.ws.input.MessageEditSocketEvent;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ public class SocketMessageEditEventDecoder extends SocketDecodeService<MessageEd
 
     @Override
     public int getEventTypeCode() {
-        return SocketEventInput.InputEventType.MESSAGE_EDIT;
+        return PulsarTypeCodes.InputEventType.MESSAGE_EDIT;
     }
 
     @Override

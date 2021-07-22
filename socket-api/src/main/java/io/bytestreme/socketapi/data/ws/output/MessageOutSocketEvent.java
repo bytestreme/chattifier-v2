@@ -1,4 +1,4 @@
-package io.bytestreme.socketapi.data.ws.input;
+package io.bytestreme.socketapi.data.ws.output;
 
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.socketapi.data.ws.AbstractSocketEvent;
@@ -13,14 +13,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MessageInSocketEvent extends AbstractSocketEvent {
-
+public class MessageOutSocketEvent extends AbstractSocketEvent {
+    private UUID sender;
     private UUID room;
-    private String text;
+    private String content;
+    private Long timestamp;
 
     @Override
     public int getType() {
-        return PulsarTypeCodes.InputEventType.MESSAGE_IN;
+        return PulsarTypeCodes.OutputEventType.MESSAGE_OUT;
     }
-
 }

@@ -1,5 +1,6 @@
 package io.bytestreme.socketapi.service;
 
+import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.socketapi.data.pulsar.mapper.MessageInEventMapper;
 import io.bytestreme.socketapi.data.ws.SocketEventInput;
 import io.bytestreme.socketapi.data.ws.SocketEventOutput;
@@ -18,9 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProducerService {
 
-    private final BeanFactory beanFactory;
     private final Map<Integer, ProcessingWrapper> processingWrapperConfigMap;
-    private final MessageInEventMapper messageInEventMapper;
     private final SocketBytesDecoderService bytesDecoderService;
 
     public Flux<SocketEventOutput> produceSocketEvent(Flux<SocketEventInput> inputFlux) {
@@ -42,11 +41,13 @@ public class ProducerService {
                                 .map(
                                         result -> new SocketEventOutput(
                                                 null,
-                                                SocketEventOutput.OutputEventType.okIfNotNull(result)
+                                                result == null
+                                                        ? PulsarTypeCodes.OutputEventType.NOK
+                                                        : PulsarTypeCodes.OutputEventType.OK
                                         )
                                 )
                 )
-                .onErrorReturn(new SocketEventOutput(null, SocketEventOutput.OutputEventType.NOK));
+                .onErrorReturn(new SocketEventOutput(null, PulsarTypeCodes.OutputEventType.NOK));
     }
 
 }

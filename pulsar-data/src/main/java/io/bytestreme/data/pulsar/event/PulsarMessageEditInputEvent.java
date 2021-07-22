@@ -7,7 +7,7 @@ import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import java.util.UUID;
 
 
-public class PulsarMessageEditEvent extends AbstractPulsarEvent {
+public class PulsarMessageEditInputEvent extends AbstractPulsarEvent {
 
     private UUID sender;
     private UUID room;
@@ -15,7 +15,7 @@ public class PulsarMessageEditEvent extends AbstractPulsarEvent {
     private String content;
     private Long timestamp;
 
-    public PulsarMessageEditEvent(UUID sender, UUID room, UUID messageId, String content, Long timestamp) {
+    public PulsarMessageEditInputEvent(UUID sender, UUID room, UUID messageId, String content, Long timestamp) {
         this.sender = sender;
         this.room = room;
         this.messageId = messageId;
@@ -23,7 +23,7 @@ public class PulsarMessageEditEvent extends AbstractPulsarEvent {
         this.timestamp = timestamp;
     }
 
-    public PulsarMessageEditEvent() {
+    public PulsarMessageEditInputEvent() {
     }
 
     @Override

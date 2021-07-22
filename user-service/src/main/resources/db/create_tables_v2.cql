@@ -28,10 +28,6 @@ CREATE TABLE IF NOT EXISTS
 );
 CREATE INDEX nameIndexForUsers ON chattifier.users (username);
 
-select *
-from chattifier.users
-where user_id = ?;
-
 CREATE TABLE IF NOT EXISTS
     chattifier.chat_rooms
 (

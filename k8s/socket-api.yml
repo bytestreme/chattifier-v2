@@ -61,7 +61,11 @@ spec:
                 configMapKeyRef:
                   name: pulsar-cm
                   key: PULSAR_TOPIC_IN_MESSAGES_IN_MESSAGES
-
+            - name: PULSAR_TOPIC_MESSAGES_OUT_NON_PERSISTENT
+              valueFrom:
+                configMapKeyRef:
+                  name: pulsar-cm
+                  key: PULSAR_TOPIC_MESSAGES_OUT_NON_PERSISTENT
 ---
 
 kind: Service

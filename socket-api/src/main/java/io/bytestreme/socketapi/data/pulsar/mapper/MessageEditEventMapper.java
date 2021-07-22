@@ -1,6 +1,7 @@
 package io.bytestreme.socketapi.data.pulsar.mapper;
 
-import io.bytestreme.data.pulsar.event.PulsarMessageEditEvent;
+import io.bytestreme.data.pulsar.PulsarTypeCodes;
+import io.bytestreme.data.pulsar.event.PulsarMessageEditInputEvent;
 import io.bytestreme.socketapi.data.ws.AbstractSocketEvent;
 import io.bytestreme.socketapi.data.ws.SocketEventInput;
 import io.bytestreme.socketapi.data.ws.input.MessageEditSocketEvent;
@@ -10,11 +11,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
-public class MessageEditEventMapper implements SocketToPulsarEventMapper<MessageEditSocketEvent, PulsarMessageEditEvent> {
+public class MessageEditEventMapper implements SocketToPulsarEventMapper<MessageEditSocketEvent, PulsarMessageEditInputEvent> {
 
     @Override
-    public PulsarMessageEditEvent map(AbstractSocketEvent socketEvent) {
-        var result = new PulsarMessageEditEvent();
+    public PulsarMessageEditInputEvent map(AbstractSocketEvent socketEvent) {
+        var result = new PulsarMessageEditInputEvent();
         var message = (MessageEditSocketEvent) socketEvent;
         result.setMessageId(message.getMessage());
         result.setContent(message.getText());
@@ -26,7 +27,7 @@ public class MessageEditEventMapper implements SocketToPulsarEventMapper<Message
 
     @Override
     public int getTypeCode() {
-        return SocketEventInput.InputEventType.MESSAGE_EDIT;
+        return PulsarTypeCodes.InputEventType.MESSAGE_EDIT;
     }
 
     private UUID getCurrentUser() {

@@ -1,5 +1,6 @@
 package io.bytestreme.socketapi.data.ws.input;
 
+import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.socketapi.data.ws.AbstractSocketEvent;
 import io.bytestreme.socketapi.data.ws.SocketEventInput;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,6 @@ public class MessageEditSocketEvent extends AbstractSocketEvent {
 
     @Override
     public int getType() {
-        return SocketEventInput.InputEventType.MESSAGE_EDIT;
+        return PulsarTypeCodes.InputEventType.MESSAGE_EDIT;
     }
 }
