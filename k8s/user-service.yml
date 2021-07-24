@@ -61,6 +61,16 @@ spec:
                 configMapKeyRef:
                   name: database-cm
                   key: APPLICATION_TOKEN
+            - name: CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: database-cm
+                  key: CLIENT_ID
+            - name: CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: database-cm
+                  key: CLIENT_ID
 
 ---
 

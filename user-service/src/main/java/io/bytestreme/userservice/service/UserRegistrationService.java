@@ -1,60 +1,46 @@
 package io.bytestreme.userservice.service;
 
 import io.bytestreme.userservice.data.UserRegisterDTO;
-import io.bytestreme.userservice.domain.id.UserById;
-import io.bytestreme.userservice.domain.id.UserByIdRepository;
-import io.bytestreme.userservice.domain.username.UserByUsername;
-import io.bytestreme.userservice.domain.username.UserByUsernameRepository;
+import io.bytestreme.userservice.domain.user.UsersByIdRepository;
+import io.bytestreme.userservice.domain.user.UsersByIdTable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
-import java.util.Collections;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserRegistrationService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserByIdRepository byIdRepository;
-    private final UserByUsernameRepository byUsernameRepository;
+    private final UsersByIdRepository byIdRepository;
 
-    public Mono<UserById> registerUser(UserRegisterDTO data) {
-        return findUserByUsername(data.getUsername())
+    public Mono<Void> registerUser(UserRegisterDTO data) {
+        return byIdRepository.findByUsername(data.getUsername())
+                .flatMap(
+                        x -> Mono.<UsersByIdTable>error(
+                                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "username.taken")
+                        )
+                )
                 .switchIfEmpty(createUser(data))
-                .flatMap(x -> Mono.error(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "username.taken")));
-//        return findUserByUsername(data.getUsername())
-//                .flatMap(x -> Mono.error(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "username.taken")))
-//                .switchIfEmpty(createUser(data));
+                .then();
     }
 
-    private Mono<UserById> createUser(UserRegisterDTO data) {
-        var userId = UUID.randomUUID();
-
-        var byId = new UserById(
-                userId,
-                data.getUsername(),
-                passwordEncoder.encode(data.getUsername()),
-                Collections.emptyList()
+    private Mono<UsersByIdTable> createUser(UserRegisterDTO data) {
+        return byIdRepository.save(
+                UsersByIdTable
+                        .builder()
+                        .userId(UUID.randomUUID())
+                        .username(data.getUsername().toLowerCase())
+                        .pass(passwordEncoder.encode(data.getPassword()))
+                        .build()
         );
-        var byUsername = new UserByUsername(
-                data.getUsername(),
-                Instant.now(),
-                userId
-        );
-        return byUsernameRepository.save(byUsername)
-                .flatMap(x -> byIdRepository.save(byId));
     }
-
-    public Mono<UserById> findUserByUsername(String username) {
-        return byUsernameRepository.findUserByUsernameUsername(username)
-                .flatMap(user -> byIdRepository.findByUserId(user.getUserId()));
-    }
-
 
 }

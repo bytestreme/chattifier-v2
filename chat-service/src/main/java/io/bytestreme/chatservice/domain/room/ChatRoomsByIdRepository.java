@@ -1,4 +1,4 @@
-package io.bytestreme.chatservice.domain;
+package io.bytestreme.chatservice.domain.room;
 
 
 import org.springframework.data.cassandra.repository.ReactiveCassandraRepository;

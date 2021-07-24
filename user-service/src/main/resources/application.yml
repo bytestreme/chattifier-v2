@@ -19,12 +19,12 @@ eureka:
       defaultZone: ${EUREKA_SERVICE_URL}
 
 astra:
-  cloud-region: "eu-central-1"
-  database-id: "93c15b57-e663-4838-9665-54ad030cacf1"
-  keyspace: "chat_ks"
-  client-id: "ZWuuHiEWQBykPibuchLmBbJR"
-  client-secret: ",mOd,EhH7-MUfzKZPUiwYZR5Sner_PjA,,iAqjSqK23jUzy.xg_M1yRepqxAZ,jw7y7f172R3FysD+2AOBZkawoRlgbmrL3ME2_WZNQQScLX+UjueboT1OmirnA9c36t"
-  application-token: "AstraCS:ZWuuHiEWQBykPibuchLmBbJR:2fd8f9a1d48bc389d2abce20c40f4a75003584921e1a07b5616b27a2907fdbfe"
+  cloud-region: ${CLOUD_REGION:eu-central-1}
+  database-id: ${DATABASE_ID:93c15b57-e663-4838-9665-54ad030cacf1}
+  keyspace: ${KEYSPACE:chat_ks}
+  client-id: ${CLIENT_ID:ZWuuHiEWQBykPibuchLmBbJR}
+  client-secret: ${CLIENT_SECRET:,mOd,EhH7-MUfzKZPUiwYZR5Sner_PjA,,iAqjSqK23jUzy.xg_M1yRepqxAZ,jw7y7f172R3FysD+2AOBZkawoRlgbmrL3ME2_WZNQQScLX+UjueboT1OmirnA9c36t}
+  application-token: ${APPLICATION_TOKEN:AstraCS:ZWuuHiEWQBykPibuchLmBbJR:2fd8f9a1d48bc389d2abce20c40f4a75003584921e1a07b5616b27a2907fdbfe}
 logging:
   level:
     root: INFO

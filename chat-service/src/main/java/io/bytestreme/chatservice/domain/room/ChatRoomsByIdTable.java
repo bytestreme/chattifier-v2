@@ -1,4 +1,4 @@
-package io.bytestreme.chatservice.domain;
+package io.bytestreme.chatservice.domain.room;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

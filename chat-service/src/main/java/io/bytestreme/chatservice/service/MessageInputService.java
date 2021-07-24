@@ -1,7 +1,7 @@
 package io.bytestreme.chatservice.service;
 
-import io.bytestreme.chatservice.domain.ChatRoomsByIdRepository;
-import io.bytestreme.chatservice.domain.ChatRoomsByIdTable;
+import io.bytestreme.chatservice.domain.room.ChatRoomsByIdRepository;
+import io.bytestreme.chatservice.domain.room.ChatRoomsByIdTable;
 import io.bytestreme.data.pulsar.event.PulsarMessageInputEvent;
 import io.bytestreme.data.pulsar.event.PulsarMessageOutEvent;
 import lombok.extern.slf4j.Slf4j;
