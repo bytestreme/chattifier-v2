@@ -1,6 +1,8 @@
 package io.bytestreme.cloudgateway.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.security.core.Authentication;
@@ -14,17 +16,27 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         super(Config.class);
     }
 
-    private String USER_ID_HEADER = "X-Gateway-ID";
+    @Value("${token.forwarded.user-id}")
+    private String USER_ID_HEADER;
 
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> exchange.getPrincipal()
-                .flatMap(p -> {
-                    var req = exchange.getRequest().mutate()
-                            .header(USER_ID_HEADER, (String) ((Authentication) p).getPrincipal())
-                            .build();
-                    return chain.filter(exchange.mutate().request(req).build());
-                });
+                .flatMap(p ->
+                        chain
+                                .filter(
+                                        exchange.mutate()
+                                                .request(
+                                                        exchange.getRequest().mutate()
+                                                                .header(
+                                                                        USER_ID_HEADER,
+                                                                        (String) ((Authentication) p).getPrincipal()
+                                                                )
+                                                                .build()
+                                                )
+                                                .build()
+                                )
+                );
     }
 
     public static class Config {

@@ -76,6 +76,12 @@ spec:
                 configMapKeyRef:
                   name: gateway-cm
                   key: SECURITY_TOKEN_WS_PREFIX
+            - name: SECURITY_HEADER_FORWARDED
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SECURITY_HEADER_FORWARDED
+
 ---
 apiVersion: v1
 kind: Service
@@ -102,3 +108,4 @@ data:
   SECURITY_JWT_REDIS_TOKEN_VERSION_KEY: "token-version"
   SECURITY_TOKEN_WS_PREFIX: "auth"
   SECURITY_TOKEN_HEADER_PREFIX: "Bearer "
+  SECURITY_HEADER_FORWARDED: "X-Gateway-ID"

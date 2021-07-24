@@ -23,9 +23,10 @@ spring:
           predicates:
             - Path=/api/**
           filters:
-            args:
-              name: SOCKET-API, AuthFilter
-              fallbackuri: forward:/socketApiFallBack
+            - AuthFilter
+#            args:
+#              name: SOCKET-API
+#              fallbackuri: forward:/socketApiFallBack
 #        - id: DEPARTMENT-SERVICE
 #          uri: lb://DEPARTMENT-SERVICE
 #          predicates:
@@ -95,3 +96,5 @@ token:
   prefix:
     ws: ${SECURITY_TOKEN_WS_PREFIX:auth}
     header: ${SECURITY_TOKEN_HEADER_PREFIX:Bearer }
+  forwarded:
+    user-id: ${SECURITY_HEADER_FORWARDED:X-Gateway-ID}

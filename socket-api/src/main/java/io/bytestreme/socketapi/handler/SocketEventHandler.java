@@ -11,6 +11,7 @@ import io.bytestreme.socketapi.service.PulsarEventSink;
 import io.bytestreme.socketapi.service.WebSocketMessageMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
@@ -34,24 +35,30 @@ public class SocketEventHandler implements WebSocketHandler {
     private final ProducerService producerService;
     private final PulsarEventSink pulsarEventSink;
 
+    @Value("${token.forwarded.user-id}")
+    private String USER_ID_HEADER;
+
     @Override
     @Nonnull
     public Mono<Void> handle(@Nonnull WebSocketSession session) {
+        String chatId = session.getHandshakeInfo().getHeaders().getFirst(USER_ID_HEADER);
+        log.info("SocketEventHandler::handle => header " + USER_ID_HEADER);
+        log.info("SocketEventHandler::handle => chatId " + chatId);
         return session.receive()
                 .map(WebSocketMessage::retain)
                 .map(WebSocketMessage::getPayload)
                 .publishOn(Schedulers.boundedElastic())
                 .transform(mapper::decode)
-                .transform(this::handle)
+                .transform(input -> this.handle(input, chatId))
                 .onBackpressureBuffer()
                 .transform(m -> mapper.encode(m, session.bufferFactory()))
                 .map(db -> new WebSocketMessage(WebSocketMessage.Type.TEXT, db))
                 .as(session::send);
     }
 
-    private Flux<SocketEventOutput> handle(Flux<SocketEventInput> inputFlux) {
+    private Flux<SocketEventOutput> handle(Flux<SocketEventInput> inputFlux, String userId) {
         Flux<SocketEventOutput> events = pulsarEventSink
-                .eventStream(UUID.fromString("b9792eab-1ed3-4834-8329-277b6109a7b9"))
+                .eventStream(UUID.fromString(userId))
                 .map(x -> {
                     log.info("mapping Flux<SocketEventOutput>");
                     SocketEventOutput eventOutput = new SocketEventOutput();

@@ -21,3 +21,7 @@ eureka:
     fetch-registry: ${EUREKA_SERVER_ENABLED:false}
     service-url:
       defaultZone: ${EUREKA_SERVICE_URL}
+
+token:
+  forwarded:
+    user-id: ${SECURITY_HEADER_FORWARDED:X-Gateway-ID}

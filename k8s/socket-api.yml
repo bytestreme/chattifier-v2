@@ -66,6 +66,12 @@ spec:
                 configMapKeyRef:
                   name: pulsar-cm
                   key: PULSAR_TOPIC_MESSAGES_OUT_NON_PERSISTENT
+            - name: SECURITY_HEADER_FORWARDED
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SECURITY_HEADER_FORWARDED
+
 ---
 
 kind: Service
