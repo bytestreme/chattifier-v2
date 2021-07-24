@@ -1,6 +1,7 @@
 package io.bytestreme.socketapi.config;
 
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
+import io.bytestreme.data.pulsar.PulsarUtil;
 import io.bytestreme.data.pulsar.event.PulsarMessageEditInputEvent;
 import io.bytestreme.data.pulsar.event.PulsarMessageInputEvent;
 import lombok.SneakyThrows;
@@ -32,7 +33,7 @@ public class PulsarProducerConfig {
         return client
                 .<PulsarMessageInputEvent>newProducer(Schema.JSON(schemaDefinition))
                 .topic(topic)
-                .producerName(UUID.randomUUID() + "__" + PulsarTypeCodes.InputEventType.MESSAGE_IN)
+                .producerName(PulsarUtil.buildRandomNameForId(PulsarTypeCodes.InputEventType.MESSAGE_IN))
                 .create();
     }
 
@@ -46,7 +47,7 @@ public class PulsarProducerConfig {
         return client
                 .<PulsarMessageEditInputEvent>newProducer(Schema.JSON(schemaDefinition))
                 .topic(topic)
-                .producerName(UUID.randomUUID() + "__" + PulsarTypeCodes.InputEventType.MESSAGE_EDIT)
+                .producerName(PulsarUtil.buildRandomNameForId(PulsarTypeCodes.InputEventType.MESSAGE_EDIT))
                 .create();
     }
 }

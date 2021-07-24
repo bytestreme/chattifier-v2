@@ -1,6 +1,7 @@
 package io.bytestreme.socketapi.config;
 
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
+import io.bytestreme.data.pulsar.PulsarUtil;
 import io.bytestreme.data.pulsar.event.PulsarMessageOutEvent;
 import io.bytestreme.socketapi.service.PulsarEventSink;
 import io.bytestreme.socketapi.service.pulsar.MessageOutHandler;
@@ -38,7 +39,7 @@ public class PulsarConsumerConfig {
         return client
                 .<PulsarMessageOutEvent>newConsumer(Schema.JSON(schemaDefinition))
                 .topic(topicRealTime)
-                .consumerName(UUID.randomUUID() + "__" + PulsarTypeCodes.OutputEventType.MESSAGE_OUT)
+                .consumerName(PulsarUtil.buildRandomNameForId(PulsarTypeCodes.OutputEventType.MESSAGE_OUT))
                 .subscriptionType(SubscriptionType.Shared)
                 .subscriptionName(UUID.randomUUID().toString())
                 .messageListener((consumer, message) -> messageOutHandler.handle(message.getValue()))

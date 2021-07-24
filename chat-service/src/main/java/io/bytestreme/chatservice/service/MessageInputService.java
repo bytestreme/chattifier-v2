@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 @Slf4j
 @Service
 public class MessageInputService {
@@ -31,21 +29,7 @@ public class MessageInputService {
         return (consumer, message) -> {
             log.info("MessageInputService::handle => message.content: " + message.getValue().getContent());
             var payload = message.getValue();
-            var users = chatRoomsById.findByRoomId(payload.getRoom());
-//                    .map(x-> UUID.fromString("b9792eab-1ed3-4834-8329-277b6109a7b9"))
-//                    .filter(connectedUsersService::isUserConnected)
-//                    .map(userId -> Mono.fromFuture(
-//                            messageOutEventProducer.sendAsync(
-//                                    new PulsarMessageOutEvent(
-//                                            userId,
-//                                            payload.getSender(),
-//                                            payload.getRoom(),
-//                                            payload.getContent(),
-//                                            payload.getTimestamp()
-//                                    )
-//                            )
-//                    )).subscribe();
-            users
+            chatRoomsById.findByRoomId(payload.getRoom())
                     .map(ChatRoomsByIdTable::getParticipants)
                     .flatMapMany(Flux::fromIterable)
                     .filter(connectedUsersService::isUserConnected)
@@ -67,8 +51,8 @@ public class MessageInputService {
                     })
                     .log("MessageInputService::handle reactor logger")
                     .subscribe();
-//        };
-    };}
+        };
+    }
 
 
 }

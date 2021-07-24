@@ -3,6 +3,7 @@ package io.bytestreme.socketapi.config;
 
 import io.bytestreme.data.pulsar.AbstractPulsarEvent;
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
+import io.bytestreme.data.pulsar.PulsarUtil;
 import io.bytestreme.socketapi.data.pulsar.mapper.SocketToPulsarEventMapper;
 import io.bytestreme.socketapi.data.ws.AbstractSocketEvent;
 import io.bytestreme.socketapi.data.ws.SocketEventInput;
@@ -37,7 +38,7 @@ public class ProcessingWrapperConfig {
                 .collect(
                         Collectors
                                 .toMap(
-                                        p -> Integer.valueOf(p.getProducerName().substring(p.getProducerName().indexOf("__") + 2)),
+                                        p -> PulsarUtil.getIdFromNameWithUUID(p.getProducerName()),
                                         s -> s
                                 )
                 );
