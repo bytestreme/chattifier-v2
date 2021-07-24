@@ -18,6 +18,8 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
+
 }
 
 ext {
@@ -29,12 +31,13 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-cassandra-reactive'
 
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
     implementation 'org.apache.pulsar:pulsar-client:2.7.2'
 
     compile project(":pulsar-data")
+    implementation 'com.github.bytestreme:astra-sdk-java-1:tag'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

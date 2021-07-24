@@ -1,6 +1,6 @@
 package io.bytestreme.socketapi.config;
 
-import io.bytestreme.socketapi.handler.PingPongHandler;
+import io.bytestreme.socketapi.handler.SocketEventHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.HandlerAdapter;
@@ -16,10 +16,10 @@ import java.util.Map;
 public class WebSocketConfig {
 
     @Bean
-    public HandlerMapping webSocketHandler(PingPongHandler pingPongHandler) {
+    public HandlerMapping webSocketHandler(SocketEventHandler socketEventHandler) {
         return new SimpleUrlHandlerMapping() {{
             setUrlMap(Map.of(
-                    "api/test", pingPongHandler
+                    "api/test", socketEventHandler
             ));
             setOrder(0);
         }};

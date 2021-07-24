@@ -6,7 +6,6 @@ import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.data.pulsar.event.PulsarMessageOutEvent;
 import io.bytestreme.socketapi.data.ws.SocketEventInput;
 import io.bytestreme.socketapi.data.ws.SocketEventOutput;
-import io.bytestreme.socketapi.data.ws.output.MessageOutSocketEvent;
 import io.bytestreme.socketapi.service.ProducerService;
 import io.bytestreme.socketapi.service.PulsarEventSink;
 import io.bytestreme.socketapi.service.WebSocketMessageMapper;
@@ -28,7 +27,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PingPongHandler implements WebSocketHandler {
+public class SocketEventHandler implements WebSocketHandler {
 
     private final ObjectMapper objectMapper;
     private final WebSocketMessageMapper mapper;
@@ -51,9 +50,10 @@ public class PingPongHandler implements WebSocketHandler {
     }
 
     private Flux<SocketEventOutput> handle(Flux<SocketEventInput> inputFlux) {
-        Flux<SocketEventOutput> events = pulsarEventSink.eventStream(UUID.fromString("19651e36-9d13-4812-a694-1b16981a78cb"))
+        Flux<SocketEventOutput> events = pulsarEventSink
+                .eventStream(UUID.fromString("b9792eab-1ed3-4834-8329-277b6109a7b9"))
                 .map(x -> {
-                    log.info("mapping stream events");
+                    log.info("mapping Flux<SocketEventOutput>");
                     SocketEventOutput eventOutput = new SocketEventOutput();
                     var pulsarEvent = (PulsarMessageOutEvent) x;
                     try {
@@ -65,9 +65,14 @@ public class PingPongHandler implements WebSocketHandler {
                     } catch (JsonProcessingException e) {
                         return new SocketEventOutput("error".getBytes(), PulsarTypeCodes.OutputEventType.NOK);
                     }
-                });
+                })
+                .doOnNext(x-> log.info(new String(x.getData())))
+                .log("event from eventStream");
         return Flux.merge(
-                Flux.interval(Duration.ofSeconds(5)).map(x -> new SocketEventOutput("null".getBytes(), PulsarTypeCodes.OutputEventType.OK)),
+                Flux.interval(Duration.ofSeconds(5))
+                        .map(
+                                x -> new SocketEventOutput("no data".getBytes(), PulsarTypeCodes.OutputEventType.OK)
+                        ),
                 producerService.produceSocketEvent(inputFlux),
                 events
         );

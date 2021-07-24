@@ -3,10 +3,15 @@ package io.bytestreme.socketapi.config;
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.data.pulsar.event.PulsarMessageOutEvent;
 import io.bytestreme.socketapi.service.PulsarEventSink;
+import io.bytestreme.socketapi.service.pulsar.MessageOutHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.client.api.*;
+import org.apache.pulsar.client.api.Consumer;
+import org.apache.pulsar.client.api.PulsarClient;
+import org.apache.pulsar.client.api.Schema;
+import org.apache.pulsar.client.api.SubscriptionType;
 import org.apache.pulsar.client.api.schema.SchemaDefinition;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +25,12 @@ public class PulsarConsumerConfig {
     @Value("${pulsar.topicRealTime}")
     private String topicRealTime;
 
+    @Autowired
+    private MessageOutHandler messageOutHandler;
+
     @SneakyThrows
     @Bean(destroyMethod = "close")
-    public Consumer<PulsarMessageOutEvent> messageOutProducer(PulsarClient client, PulsarEventSink pulsarEventSink) {
+    public Consumer<PulsarMessageOutEvent> messageOutConsumer(PulsarClient client) {
         SchemaDefinition<PulsarMessageOutEvent> schemaDefinition = SchemaDefinition
                 .<PulsarMessageOutEvent>builder()
                 .withPojo(PulsarMessageOutEvent.class)
@@ -33,10 +41,7 @@ public class PulsarConsumerConfig {
                 .consumerName(UUID.randomUUID() + "__" + PulsarTypeCodes.OutputEventType.MESSAGE_OUT)
                 .subscriptionType(SubscriptionType.Shared)
                 .subscriptionName(UUID.randomUUID().toString())
-                .messageListener((MessageListener<PulsarMessageOutEvent>) (consumer, message) -> {
-                    log.info("listener PulsarMessageOutEvent ");
-                    pulsarEventSink.onNext(message.getValue());
-                })
+                .messageListener((consumer, message) -> messageOutHandler.handle(message.getValue()))
                 .subscribe();
     }
 

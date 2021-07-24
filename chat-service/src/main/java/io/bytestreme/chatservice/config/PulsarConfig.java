@@ -1,5 +1,6 @@
 package io.bytestreme.chatservice.config;
 
+import io.bytestreme.chatservice.service.MessageInputService;
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.data.pulsar.event.PulsarMessageInputEvent;
 import io.bytestreme.data.pulsar.event.PulsarMessageOutEvent;
@@ -7,11 +8,11 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.*;
 import org.apache.pulsar.client.api.schema.SchemaDefinition;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -33,8 +34,10 @@ public class PulsarConfig {
     @Value("${pulsar.topicRealTime}")
     private String topicRealTime;
 
+    @Autowired
+    private MessageInputService messageInputService;
+
     @SneakyThrows
-    @Scope("prototype")
     @Bean(destroyMethod = "close")
     public PulsarClient pulsarClient() {
         return PulsarClient.builder()
@@ -63,32 +66,8 @@ public class PulsarConfig {
 
     @SneakyThrows
     @Bean(destroyMethod = "close")
-    public Consumer<PulsarMessageInputEvent> consumer(PulsarClient client,
-                                                      Producer<PulsarMessageOutEvent> messageOutEventProducer) {
-        MessageListener<PulsarMessageInputEvent> messageListener = (consumer, msg) -> {
-            try {
-                log.info("PulsarMessageInputEvent consumer msg: " + msg.getValue().getContent());
-                var payload = msg.getValue();
-                var sending = new PulsarMessageOutEvent(UUID.fromString("19651e36-9d13-4812-a694-1b16981a78cb"));//todo: get rooms
-                sending.setRoom(payload.getRoom());
-                sending.setTimestamp(payload.getTimestamp());
-                sending.setContent(payload.getContent());
-                sending.setSender(payload.getSender());
-                Mono.fromFuture(messageOutEventProducer.sendAsync(sending))
-                        .doOnNext(m -> {
-                            try {
-                                log.info("do on next");
-                                consumer.acknowledge(m);
-                            } catch (PulsarClientException e) {
-                                e.printStackTrace();
-                            }
-                        })
-                        .subscribe();
-            } catch (Exception e) {
-                consumer.negativeAcknowledge(msg);
-                log.error(e.getMessage());
-            }
-        };
+    public Consumer<PulsarMessageInputEvent> consumer(PulsarClient client) {
+
         SchemaDefinition<PulsarMessageInputEvent> schemaDefinition = SchemaDefinition
                 .<PulsarMessageInputEvent>builder()
                 .withPojo(PulsarMessageInputEvent.class)
@@ -99,7 +78,7 @@ public class PulsarConfig {
                 .subscriptionName(SOCKET_CONSUMER_PREFIX + UUID.randomUUID())
                 .subscriptionType(SubscriptionType.Shared)
                 .consumerName(UUID.randomUUID() + "__" + PulsarTypeCodes.InputEventType.MESSAGE_IN)
-                .messageListener(messageListener)
+                .messageListener(messageInputService.handleMessages())
                 .subscribe();
     }
 }

@@ -25,7 +25,6 @@ public class PulsarClientConfig {
     private String topic;
 
     @SneakyThrows
-    @Scope("prototype")
     @Bean(destroyMethod = "close")
     public PulsarClient pulsarClient() {
         return PulsarClient.builder()
