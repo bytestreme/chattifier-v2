@@ -33,6 +33,7 @@ public class MessageInputService {
                     .map(ChatRoomsByIdTable::getParticipants)
                     .flatMapMany(Flux::fromIterable)
                     .filter(connectedUsersService::isUserConnected)
+                    .filter(x -> !x.equals(message.getValue().getSender()))
                     .flatMap(
                             userId -> Mono.fromFuture(
                                     messageOutEventProducer.sendAsync(
