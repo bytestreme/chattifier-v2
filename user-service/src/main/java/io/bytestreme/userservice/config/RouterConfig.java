@@ -19,7 +19,7 @@ public class RouterConfig {
     @Bean
     public RouterFunction<ServerResponse> routerFunction(UserHandler userHandler) {
         return RouterFunctions.route(
-                RequestPredicates.POST("/register"),
+                RequestPredicates.POST("/user/register"),
                 userHandler::handleRequest
         );
     }
