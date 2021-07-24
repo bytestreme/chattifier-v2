@@ -1,6 +1,7 @@
 package io.bytestreme.userservice.config;
 
-import io.bytestreme.userservice.handler.UserHandler;
+import io.bytestreme.userservice.handler.UserLoginHandler;
+import io.bytestreme.userservice.handler.UserRegisterHandler;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,20 +9,20 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
+
+import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
+import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
 public class RouterConfig {
 
     @Bean
-    public RouterFunction<ServerResponse> routerFunction(UserHandler userHandler) {
-        return RouterFunctions.route(
-                RequestPredicates.POST("/user/register"),
-                userHandler::handleRequest
-        );
+    public RouterFunction<ServerResponse> routerFunction(UserRegisterHandler userRegisterHandler,
+                                                         UserLoginHandler userLoginHandler) {
+        return route(POST("/user/register"), userRegisterHandler::handleRequest)
+                .and(route(POST("/user/login"), userLoginHandler::handleRequest));
     }
 
     @Bean

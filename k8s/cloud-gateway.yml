@@ -51,7 +51,31 @@ spec:
                 configMapKeyRef:
                   name: redis-cm
                   key: REDIS_PORT
-
+            - name: SECURITY_JWT_VERSION_CLAIM
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SECURITY_JWT_VERSION_CLAIM
+            - name: SECURITY_JWT_REDIS_TOKEN_VERSION_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SECURITY_JWT_REDIS_TOKEN_VERSION_KEY
+            - name: SECURITY_JWT_SIGN
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SECURITY_JWT_SIGN
+            - name: SECURITY_TOKEN_HEADER_PREFIX
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SECURITY_TOKEN_HEADER_PREFIX
+            - name: SECURITY_TOKEN_WS_PREFIX
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SECURITY_TOKEN_WS_PREFIX
 ---
 apiVersion: v1
 kind: Service
@@ -66,3 +90,15 @@ spec:
   selector:
     app: cloud-gateway-app
 
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-cm
+data:
+  SECURITY_JWT_SIGN: "chatjwt-key"
+  SECURITY_JWT_VERSION_CLAIM: "token-version"
+  SECURITY_JWT_REDIS_TOKEN_VERSION_KEY: "token-version"
+  SECURITY_TOKEN_WS_PREFIX: "auth"
+  SECURITY_TOKEN_HEADER_PREFIX: "Bearer "

@@ -66,12 +66,31 @@ spec:
                 configMapKeyRef:
                   name: database-cm
                   key: CLIENT_ID
-            - name: CLIENT_ID
+            - name: SECURITY_JWT_SIGN
               valueFrom:
                 configMapKeyRef:
-                  name: database-cm
-                  key: CLIENT_ID
-
+                  name: gateway-cm
+                  key: SECURITY_JWT_SIGN
+            - name: SECURITY_JWT_VERSION_CLAIM
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SECURITY_JWT_VERSION_CLAIM
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-cm
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-cm
+                  key: REDIS_PORT
+            - name: SECURITY_JWT_REDIS_TOKEN_VERSION_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SECURITY_JWT_REDIS_TOKEN_VERSION_KEY
 ---
 
 kind: Service

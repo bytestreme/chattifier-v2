@@ -7,7 +7,6 @@ spring:
   application:
     name: USER-SERVICE
 
-
 eureka:
   instance:
     prefer-ip-address: true
@@ -25,9 +24,19 @@ astra:
   client-id: ${CLIENT_ID:ZWuuHiEWQBykPibuchLmBbJR}
   client-secret: ${CLIENT_SECRET:,mOd,EhH7-MUfzKZPUiwYZR5Sner_PjA,,iAqjSqK23jUzy.xg_M1yRepqxAZ,jw7y7f172R3FysD+2AOBZkawoRlgbmrL3ME2_WZNQQScLX+UjueboT1OmirnA9c36t}
   application-token: ${APPLICATION_TOKEN:AstraCS:ZWuuHiEWQBykPibuchLmBbJR:2fd8f9a1d48bc389d2abce20c40f4a75003584921e1a07b5616b27a2907fdbfe}
+
 logging:
   level:
     root: INFO
-#    io:
-#      bytestreme:
-#        userservice: DEBUG
+
+jwt:
+  key: ${SECURITY_JWT_SIGN:chatjwt-key}
+  claim:
+    token-version: ${SECURITY_JWT_VERSION_CLAIM:token-version}
+
+
+redis:
+  host: ${REDIS_HOST:localhost}
+  port: ${REDIS_PORT:6379}
+  key:
+    token-version: ${SECURITY_JWT_REDIS_TOKEN_VERSION_KEY:token-version}

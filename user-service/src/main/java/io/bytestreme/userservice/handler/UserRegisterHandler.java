@@ -11,12 +11,12 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 @Component
-public class UserHandler extends AbstractValidationHandler<UserRegisterDTO, Validator> {
+public class UserRegisterHandler extends AbstractValidationHandler<UserRegisterDTO, Validator> {
 
     private final UserRegistrationService userRegistrationService;
 
-    public UserHandler(Validator validator,
-                       UserRegistrationService userRegistrationService) {
+    public UserRegisterHandler(Validator validator,
+                               UserRegistrationService userRegistrationService) {
         super(UserRegisterDTO.class, validator);
         this.userRegistrationService = userRegistrationService;
     }

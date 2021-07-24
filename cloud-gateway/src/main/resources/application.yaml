@@ -24,7 +24,7 @@ spring:
             - Path=/api/**
           filters:
             args:
-              name: SOCKET-API
+              name: SOCKET-API, AuthFilter
               fallbackuri: forward:/socketApiFallBack
 #        - id: DEPARTMENT-SERVICE
 #          uri: lb://DEPARTMENT-SERVICE
@@ -49,6 +49,9 @@ management:
     web:
       exposure:
         include: health, metrics, prometheus
+  health:
+    cassandra:
+      enabled: false
   metrics:
     tags:
       application: ${spring.application.name}
@@ -70,3 +73,25 @@ nameRegistry:
 redis:
   host: ${REDIS_HOST:localhost}
   port: ${REDIS_PORT:6379}
+  key:
+    token-version: ${SECURITY_JWT_REDIS_TOKEN_VERSION_KEY:token-version}
+
+astra:
+  cloud-region: ${CLOUD_REGION:eu-central-1}
+  database-id: ${DATABASE_ID:93c15b57-e663-4838-9665-54ad030cacf1}
+  keyspace: ${KEYSPACE:chat_ks}
+  client-id: ${CLIENT_ID:ZWuuHiEWQBykPibuchLmBbJR}
+  client-secret: ${CLIENT_SECRET:,mOd,EhH7-MUfzKZPUiwYZR5Sner_PjA,,iAqjSqK23jUzy.xg_M1yRepqxAZ,jw7y7f172R3FysD+2AOBZkawoRlgbmrL3ME2_WZNQQScLX+UjueboT1OmirnA9c36t}
+  application-token: ${APPLICATION_TOKEN:AstraCS:ZWuuHiEWQBykPibuchLmBbJR:2fd8f9a1d48bc389d2abce20c40f4a75003584921e1a07b5616b27a2907fdbfe}
+logging:
+  level:
+    root: INFO
+
+jwt:
+  key: ${SECURITY_JWT_SIGN:chatjwt-key}
+  claim:
+    token-version: ${SECURITY_JWT_VERSION_CLAIM:token-version}
+token:
+  prefix:
+    ws: ${SECURITY_TOKEN_WS_PREFIX:auth}
+    header: ${SECURITY_TOKEN_HEADER_PREFIX:Bearer }
