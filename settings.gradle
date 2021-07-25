@@ -21,9 +21,6 @@ project(':chat-service').projectDir = file('./chat-service')
 include ':message-service'
 project(':message-service').projectDir = file('./message-service')
 
-include ':metrics-service'
-project(':metrics-service').projectDir = file('./metrics-service')
-
 include ':pulsar-data'
 project(':pulsar-data').projectDir = file('./pulsar-data')
 
