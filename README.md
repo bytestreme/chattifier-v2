@@ -4,6 +4,7 @@ Chattifier is a backend for a distributed chat messaging system running inside t
  - Microservice architecture
  - Purely event-based and asynchronous
  - Some architectural improvements were made compared to the [first version](https://github.com/bytestreme/chattifier-backend)
+   - Migrated from multiple sockets to one centralized socket for all in/out events
  
 # Tech stack
 
