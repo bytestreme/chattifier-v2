@@ -1,0 +1,6 @@
+FROM openjdk:11-jre-slim-buster
+ARG JAR_FILE
+ENV JAR_FILE=${JAR_FILE}
+COPY ${JAR_FILE} .
+ENTRYPOINT java -jar ${JAR_FILE}
+EXPOSE 8092

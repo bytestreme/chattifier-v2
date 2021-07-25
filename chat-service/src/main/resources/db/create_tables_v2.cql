@@ -36,13 +36,3 @@ VALUES ('0c05078c-d92f-4bea-8f4c-d5ace7772372', 'room 1', now(), 'b9792eab-1ed3-
 -- VALUES (0c05078c-d92f-4bea-8f4c-d5ace7772372, 'room 1', dateof(now()), b9792eab-1ed3-4834-8329-277b6109a7b9,
 --         {b9792eab-1ed3-4834-8329-277b6109a7b9, ac1739c9-4e90-47e8-9026-d57b1deb723d}, 'banner text', true);
 
-CREATE TABLE IF NOT EXISTS
-    chat_ks.messages_by_room
-(
-    room_id        uuid,
-    message_id     timeuuid,
-    data           text,
-    sender         uuid,
-    system_message boolean,
-    PRIMARY KEY ((room_id), message_id)
-) WITH CLUSTERING ORDER BY (message_id DESC);

@@ -1,11 +1,9 @@
 package io.bytestreme.socketapi.service;
 
-import io.bytestreme.data.pulsar.AbstractPulsarOutputEvent;
+import io.bytestreme.data.pulsar.event.output.AbstractPulsarOutputEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 

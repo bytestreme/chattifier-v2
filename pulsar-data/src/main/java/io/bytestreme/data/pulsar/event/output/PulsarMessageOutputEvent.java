@@ -1,31 +1,34 @@
-package io.bytestreme.data.pulsar.event;
+package io.bytestreme.data.pulsar.event.output;
 
-import io.bytestreme.data.pulsar.AbstractPulsarEvent;
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
-
 
 import java.util.UUID;
 
-
-public class PulsarMessageInputEvent extends AbstractPulsarEvent {
+public class PulsarMessageOutputEvent extends AbstractPulsarOutputEvent {
     private UUID sender;
     private UUID room;
     private String content;
     private Long timestamp;
 
-    public PulsarMessageInputEvent(UUID sender, UUID room, String content, Long timestamp) {
+    public PulsarMessageOutputEvent(UUID target, UUID sender, UUID room, String content, Long timestamp) {
+        super(target);
         this.sender = sender;
         this.room = room;
         this.content = content;
         this.timestamp = timestamp;
     }
 
-    public PulsarMessageInputEvent() {
+    public PulsarMessageOutputEvent(UUID target) {
+        super(target);
+    }
+
+    public PulsarMessageOutputEvent() {
+        super(null);
     }
 
     @Override
     public int getEventType() {
-        return PulsarTypeCodes.InputEventType.MESSAGE_IN;
+        return PulsarTypeCodes.OutputEventType.MESSAGE_OUT;
     }
 
     public UUID getSender() {

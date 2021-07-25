@@ -2,8 +2,7 @@ package io.bytestreme.socketapi.config;
 
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.data.pulsar.PulsarUtil;
-import io.bytestreme.data.pulsar.event.PulsarMessageOutEvent;
-import io.bytestreme.socketapi.service.PulsarEventSink;
+import io.bytestreme.data.pulsar.event.output.PulsarMessageOutputEvent;
 import io.bytestreme.socketapi.service.pulsar.MessageOutHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -31,13 +30,13 @@ public class PulsarConsumerConfig {
 
     @SneakyThrows
     @Bean(destroyMethod = "close")
-    public Consumer<PulsarMessageOutEvent> messageOutConsumer(PulsarClient client) {
-        SchemaDefinition<PulsarMessageOutEvent> schemaDefinition = SchemaDefinition
-                .<PulsarMessageOutEvent>builder()
-                .withPojo(PulsarMessageOutEvent.class)
+    public Consumer<PulsarMessageOutputEvent> messageOutConsumer(PulsarClient client) {
+        SchemaDefinition<PulsarMessageOutputEvent> schemaDefinition = SchemaDefinition
+                .<PulsarMessageOutputEvent>builder()
+                .withPojo(PulsarMessageOutputEvent.class)
                 .build();
         return client
-                .<PulsarMessageOutEvent>newConsumer(Schema.JSON(schemaDefinition))
+                .<PulsarMessageOutputEvent>newConsumer(Schema.JSON(schemaDefinition))
                 .topic(topicRealTime)
                 .consumerName(PulsarUtil.buildRandomNameForId(PulsarTypeCodes.OutputEventType.MESSAGE_OUT))
                 .subscriptionType(SubscriptionType.Shared)

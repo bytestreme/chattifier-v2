@@ -2,8 +2,8 @@ package io.bytestreme.socketapi.config;
 
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.data.pulsar.PulsarUtil;
-import io.bytestreme.data.pulsar.event.PulsarMessageEditInputEvent;
-import io.bytestreme.data.pulsar.event.PulsarMessageInputEvent;
+import io.bytestreme.data.pulsar.event.input.PulsarMessageEditInputEvent;
+import io.bytestreme.data.pulsar.event.input.PulsarMessageInputEvent;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.Producer;
@@ -13,8 +13,6 @@ import org.apache.pulsar.client.api.schema.SchemaDefinition;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.UUID;
 
 @Slf4j
 @Configuration

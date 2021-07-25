@@ -1,0 +1,4 @@
+rootProject.name = 'message-service'
+
+include ':pulsar-data'
+project(':pulsar-data').projectDir = new File('../pulsar-data')

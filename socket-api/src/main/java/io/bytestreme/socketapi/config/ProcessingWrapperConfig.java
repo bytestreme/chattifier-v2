@@ -1,12 +1,11 @@
 package io.bytestreme.socketapi.config;
 
 
-import io.bytestreme.data.pulsar.AbstractPulsarEvent;
+import io.bytestreme.data.pulsar.event.input.AbstractPulsarEvent;
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
 import io.bytestreme.data.pulsar.PulsarUtil;
 import io.bytestreme.socketapi.data.pulsar.mapper.SocketToPulsarEventMapper;
 import io.bytestreme.socketapi.data.ws.AbstractSocketEvent;
-import io.bytestreme.socketapi.data.ws.SocketEventInput;
 import io.bytestreme.socketapi.service.decode.SocketDecodeService;
 import io.bytestreme.socketapi.util.ProcessingWrapper;
 import lombok.extern.slf4j.Slf4j;

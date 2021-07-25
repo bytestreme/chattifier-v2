@@ -76,6 +76,7 @@ redis:
   port: ${REDIS_PORT:6379}
   key:
     token-version: ${SECURITY_JWT_REDIS_TOKEN_VERSION_KEY:token-version}
+    connected-users: ${SOCKET_REDIS_CONNECTED_USERS_KEY:connected-users}
 
 astra:
   cloud-region: ${CLOUD_REGION:eu-central-1}

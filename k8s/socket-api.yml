@@ -71,7 +71,21 @@ spec:
                 configMapKeyRef:
                   name: gateway-cm
                   key: SECURITY_HEADER_FORWARDED
-
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-cm
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-cm
+                  key: REDIS_PORT
+            - name: SOCKET_REDIS_CONNECTED_USERS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SOCKET_REDIS_CONNECTED_USERS_KEY
 ---
 
 kind: Service

@@ -96,7 +96,26 @@ spec:
                 configMapKeyRef:
                   name: database-cm
                   key: CLIENT_ID
-
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-cm
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-cm
+                  key: REDIS_PORT
+            - name: SOCKET_REDIS_CONNECTED_USERS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: gateway-cm
+                  key: SOCKET_REDIS_CONNECTED_USERS_KEY
+            - name: PULSAR_TOPIC_MESSAGE_PERSIST
+              valueFrom:
+                configMapKeyRef:
+                  name: pulsar-cm
+                  key: PULSAR_TOPIC_MESSAGE_PERSIST
 ---
 
 kind: Service

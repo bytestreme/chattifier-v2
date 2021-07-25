@@ -25,3 +25,9 @@ eureka:
 token:
   forwarded:
     user-id: ${SECURITY_HEADER_FORWARDED:X-Gateway-ID}
+
+redis:
+  host: ${REDIS_HOST:localhost}
+  port: ${REDIS_PORT:6379}
+  key:
+    connected-users: ${SOCKET_REDIS_CONNECTED_USERS_KEY:connected-users}

@@ -8,3 +8,4 @@ data:
   PULSAR_TENANT: "tnnt"
   PULSAR_TOPIC_IN_MESSAGES_IN_MESSAGES: "persistent://tnnt/default/my-topic"
   PULSAR_TOPIC_MESSAGES_OUT_NON_PERSISTENT: "persistent://tnnt/default/real-time"
+  PULSAR_TOPIC_MESSAGE_PERSIST: "persistent://tnnt/default/persist-messages"

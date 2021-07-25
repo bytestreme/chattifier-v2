@@ -1,9 +1,8 @@
 package io.bytestreme.socketapi.data.pulsar.mapper;
 
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
-import io.bytestreme.data.pulsar.event.PulsarMessageEditInputEvent;
+import io.bytestreme.data.pulsar.event.input.PulsarMessageEditInputEvent;
 import io.bytestreme.socketapi.data.ws.AbstractSocketEvent;
-import io.bytestreme.socketapi.data.ws.SocketEventInput;
 import io.bytestreme.socketapi.data.ws.input.MessageEditSocketEvent;
 import org.springframework.stereotype.Service;
 

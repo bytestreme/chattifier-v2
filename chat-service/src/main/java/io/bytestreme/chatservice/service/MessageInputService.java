@@ -2,8 +2,8 @@ package io.bytestreme.chatservice.service;
 
 import io.bytestreme.chatservice.domain.room.ChatRoomsByIdRepository;
 import io.bytestreme.chatservice.domain.room.ChatRoomsByIdTable;
-import io.bytestreme.data.pulsar.event.PulsarMessageInputEvent;
-import io.bytestreme.data.pulsar.event.PulsarMessageOutEvent;
+import io.bytestreme.data.pulsar.event.input.PulsarMessageInputEvent;
+import io.bytestreme.data.pulsar.event.output.PulsarMessageOutputEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.MessageListener;
 import org.apache.pulsar.client.api.Producer;
@@ -17,13 +17,16 @@ import reactor.core.publisher.Mono;
 public class MessageInputService {
 
     @Autowired
-    private Producer<PulsarMessageOutEvent> messageOutEventProducer;
+    private Producer<PulsarMessageOutputEvent> messageOutEventProducer;
 
     @Autowired
     private ChatRoomsByIdRepository chatRoomsById;
 
     @Autowired
     private ConnectedUsersService connectedUsersService;
+
+    @Autowired
+    private PersistMessagesService persistMessagesService;
 
     public MessageListener<PulsarMessageInputEvent> handleMessages() {
         return (consumer, message) -> {
@@ -32,25 +35,21 @@ public class MessageInputService {
             chatRoomsById.findByRoomId(payload.getRoom())
                     .map(ChatRoomsByIdTable::getParticipants)
                     .flatMapMany(Flux::fromIterable)
-                    .filter(connectedUsersService::isUserConnected)
-                    .filter(x -> !x.equals(message.getValue().getSender()))
-                    .flatMap(
-                            userId -> Mono.fromFuture(
-                                    messageOutEventProducer.sendAsync(
-                                            new PulsarMessageOutEvent(
-                                                    userId,
-                                                    payload.getSender(),
-                                                    payload.getRoom(),
-                                                    payload.getContent(),
-                                                    payload.getTimestamp()
-                                            )
-                                    )
-                            )
-                    )
-                    .doOnNext((e) -> {
-                        log.info("messageId " + e.toString());
+                    .doOnNext((user) -> {
+                        log.info("trying to persist messages " + user);
+                        persistMessagesService.requestMessagesToPersist(payload);
                     })
-                    .log("MessageInputService::handle reactor logger")
+                    .filter(x -> !x.equals(message.getValue().getSender()))
+                    .map(target -> new PulsarMessageOutputEvent(
+                            target,
+                            payload.getSender(),
+                            payload.getRoom(),
+                            payload.getContent(),
+                            payload.getTimestamp()
+                    ))
+                    .flatMap(connectedUsersService::isConnected)
+                    .map(messageOutEventProducer::sendAsync)
+                    .flatMap(Mono::fromFuture)
                     .subscribe();
         };
     }

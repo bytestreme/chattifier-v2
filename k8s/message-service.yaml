@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-service-app
+  labels:
+    app: message-service-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: message-service-app
+  template:
+    metadata:
+      labels:
+        app: message-service-app
+    spec:
+      containers:
+        - name: message-service-app
+          image: shynggys/io.bytestreme.message-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8092
+          env:
+            - name: CONFIG_SERVER_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: cloud-config-cm
+                  key: CONFIG_SERVER_URI
+            - name: EUREKA_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: EUREKA_SERVICE_URL
+            - name: CONFIG_SERVER_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: cloud-config-cm
+                  key: CONFIG_SERVER_ENABLED
+            - name: EUREKA_SERVER_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: EUREKA_SERVER_ENABLED
+            - name: PULSAR_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: pulsar-cm
+                  key: PULSAR_SERVICE_URL
+            - name: PULSAR_AUTHENTICATION
+              valueFrom:
+                configMapKeyRef:
+                  name: pulsar-cm
+                  key: PULSAR_AUTHENTICATION
+            - name: PULSAR_TENANT
+              valueFrom:
+                configMapKeyRef:
+                  name: pulsar-cm
+                  key: PULSAR_TENANT
+            - name: PULSAR_TOPIC_MESSAGE_PERSIST
+              valueFrom:
+                configMapKeyRef:
+                  name: pulsar-cm
+                  key: PULSAR_TOPIC_MESSAGE_PERSIST
+            - name: CLOUD_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: database-cm
+                  key: CLOUD_REGION
+            - name: DATABASE_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: database-cm
+                  key: DATABASE_ID
+            - name: KEYSPACE
+              valueFrom:
+                configMapKeyRef:
+                  name: database-cm
+                  key: KEYSPACE
+            - name: APPLICATION_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  name: database-cm
+                  key: APPLICATION_TOKEN
+            - name: CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: database-cm
+                  key: CLIENT_ID
+            - name: CLIENT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: database-cm
+                  key: CLIENT_SECRET
+
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: message-service-svc
+spec:
+  selector:
+    app: message-service-app
+  ports:
+    - port: 80
+      targetPort: 8092
+

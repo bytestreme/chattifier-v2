@@ -1,4 +1,6 @@
-package io.bytestreme.data.pulsar;
+package io.bytestreme.data.pulsar.event.output;
+
+import io.bytestreme.data.pulsar.event.input.AbstractPulsarEvent;
 
 import java.util.UUID;
 

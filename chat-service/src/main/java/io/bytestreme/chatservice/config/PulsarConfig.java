@@ -2,8 +2,9 @@ package io.bytestreme.chatservice.config;
 
 import io.bytestreme.chatservice.service.MessageInputService;
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
-import io.bytestreme.data.pulsar.event.PulsarMessageInputEvent;
-import io.bytestreme.data.pulsar.event.PulsarMessageOutEvent;
+import io.bytestreme.data.pulsar.event.input.PulsarMessageInputEvent;
+import io.bytestreme.data.pulsar.event.input.PulsarMessagePersistRequestInputEvent;
+import io.bytestreme.data.pulsar.event.output.PulsarMessageOutputEvent;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.*;
@@ -33,6 +34,9 @@ public class PulsarConfig {
     @Value("${pulsar.topicRealTime}")
     private String topicRealTime;
 
+    @Value("${pulsar.topicPersistMessages}")
+    private String topicPersistMessages;
+
     @Autowired
     private MessageInputService messageInputService;
 
@@ -50,13 +54,13 @@ public class PulsarConfig {
 
     @SneakyThrows
     @Bean(destroyMethod = "close")
-    public Producer<PulsarMessageOutEvent> messageOutEventProducer(PulsarClient client) {
-        SchemaDefinition<PulsarMessageOutEvent> schemaDefinition = SchemaDefinition
-                .<PulsarMessageOutEvent>builder()
-                .withPojo(PulsarMessageOutEvent.class)
+    public Producer<PulsarMessageOutputEvent> messageOutEventProducer(PulsarClient client) {
+        SchemaDefinition<PulsarMessageOutputEvent> schemaDefinition = SchemaDefinition
+                .<PulsarMessageOutputEvent>builder()
+                .withPojo(PulsarMessageOutputEvent.class)
                 .build();
         return client
-                .<PulsarMessageOutEvent>newProducer(Schema.JSON(schemaDefinition))
+                .<PulsarMessageOutputEvent>newProducer(Schema.JSON(schemaDefinition))
                 .topic(topicRealTime)
                 .producerName(UUID.randomUUID() + "__" + PulsarTypeCodes.OutputEventType.MESSAGE_OUT)
                 .create();
@@ -80,4 +84,19 @@ public class PulsarConfig {
                 .messageListener(messageInputService.handleMessages())
                 .subscribe();
     }
+
+    @SneakyThrows
+    @Bean(destroyMethod = "close")
+    public Producer<PulsarMessagePersistRequestInputEvent> messagePersistProducer(PulsarClient client) {
+        SchemaDefinition<PulsarMessagePersistRequestInputEvent> schemaDefinition = SchemaDefinition
+                .<PulsarMessagePersistRequestInputEvent>builder()
+                .withPojo(PulsarMessagePersistRequestInputEvent.class)
+                .build();
+        return client
+                .<PulsarMessagePersistRequestInputEvent>newProducer(Schema.JSON(schemaDefinition))
+                .topic(topicPersistMessages)
+                .producerName(UUID.randomUUID() + "__" + PulsarTypeCodes.OutputEventType.PERSIST_REQUEST_OUT)
+                .create();
+    }
+
 }

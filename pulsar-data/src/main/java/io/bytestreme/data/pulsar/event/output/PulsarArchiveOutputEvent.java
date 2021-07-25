@@ -1,34 +1,35 @@
-package io.bytestreme.data.pulsar.event;
+package io.bytestreme.data.pulsar.event.output;
 
-import io.bytestreme.data.pulsar.AbstractPulsarEvent;
 import io.bytestreme.data.pulsar.PulsarTypeCodes;
-
 
 import java.util.UUID;
 
-
-public class PulsarMessageEditInputEvent extends AbstractPulsarEvent {
+public class PulsarArchiveOutputEvent extends AbstractPulsarOutputEvent {
 
     private UUID sender;
     private UUID room;
-    private UUID messageId;
     private String content;
     private Long timestamp;
 
-    public PulsarMessageEditInputEvent(UUID sender, UUID room, UUID messageId, String content, Long timestamp) {
+    public PulsarArchiveOutputEvent() {
+        super(null);
+    }
+
+    public PulsarArchiveOutputEvent(UUID target) {
+        super(target);
+    }
+
+    public PulsarArchiveOutputEvent(UUID target, UUID sender, UUID room, String content, Long timestamp) {
+        super(target);
         this.sender = sender;
         this.room = room;
-        this.messageId = messageId;
         this.content = content;
         this.timestamp = timestamp;
     }
 
-    public PulsarMessageEditInputEvent() {
-    }
-
     @Override
     public int getEventType() {
-        return PulsarTypeCodes.InputEventType.MESSAGE_EDIT;
+        return PulsarTypeCodes.OutputEventType.ARCHIVE_OUT;
     }
 
     public UUID getSender() {
@@ -45,14 +46,6 @@ public class PulsarMessageEditInputEvent extends AbstractPulsarEvent {
 
     public void setRoom(UUID room) {
         this.room = room;
-    }
-
-    public UUID getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(UUID messageId) {
-        this.messageId = messageId;
     }
 
     public String getContent() {
