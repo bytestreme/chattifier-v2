@@ -28,10 +28,7 @@ public class PulsarEventSink {
         log.info("getting for: " + user);
         return eventSink.asFlux()
                 .doOnNext(s -> log.info("eventStream::onNext: " + s.getTarget()))
-                .filter(x -> {
-                    log.info("comparing: " + user + " and " + x.getTarget() + " " + x.getTarget().equals(user));
-                    return x.getTarget().equals(user);
-                })
+                .filter(x -> x.getTarget().equals(user))
                 .doOnSubscribe(s -> log.info("eventStream::onSubscribe"))
                 .doOnCancel(() -> log.info("eventStream::onCancel"));
     }

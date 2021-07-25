@@ -36,3 +36,10 @@ VALUES ('0c05078c-d92f-4bea-8f4c-d5ace7772372', 'room 1', now(), 'b9792eab-1ed3-
 -- VALUES (0c05078c-d92f-4bea-8f4c-d5ace7772372, 'room 1', dateof(now()), b9792eab-1ed3-4834-8329-277b6109a7b9,
 --         {b9792eab-1ed3-4834-8329-277b6109a7b9, ac1739c9-4e90-47e8-9026-d57b1deb723d}, 'banner text', true);
 
+insert into chat_ks.chat_rooms_by_id(room_id, room_name, creation_date, creator_uid, participants, banner, one_to_one)
+VALUES ('38c2f69e-d474-48b7-9ac1-160411a81bd2', 'room 2', now(), 'd25774ae-1c1d-4ec5-8383-83ad99cc9561',
+        {'d25774ae-1c1d-4ec5-8383-83ad99cc9561', '313637d9-b7ab-4959-b58d-c807623e3032'}, 'banner text2', true);
+
+insert into chat_ks.chat_rooms_by_id(room_id, room_name, creation_date, creator_uid, participants, banner, one_to_one)
+VALUES (38c2f69e-d474-48b7-9ac1-160411a81bd2, 'room 2', dateof(now()), d25774ae-1c1d-4ec5-8383-83ad99cc9561,
+        {d25774ae-1c1d-4ec5-8383-83ad99cc9561, 313637d9-b7ab-4959-b58d-c807623e3032}, 'banner text2', true);

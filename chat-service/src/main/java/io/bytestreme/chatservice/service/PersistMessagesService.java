@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.MessageId;
 import org.apache.pulsar.client.api.Producer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -14,7 +15,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class PersistMessagesService {
 
-    private final Producer<PulsarMessagePersistRequestInputEvent> messagePersistProducer;
+    @Autowired
+    private Producer<PulsarMessagePersistRequestInputEvent> messagePersistProducer;
 
     public Mono<MessageId> requestMessagesToPersist(PulsarMessageInputEvent inputEvent) {
         return Mono.fromFuture(messagePersistProducer.sendAsync(

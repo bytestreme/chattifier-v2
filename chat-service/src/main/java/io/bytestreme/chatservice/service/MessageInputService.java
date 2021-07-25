@@ -37,7 +37,7 @@ public class MessageInputService {
                     .flatMapMany(Flux::fromIterable)
                     .doOnNext((user) -> {
                         log.info("trying to persist messages " + user);
-                        persistMessagesService.requestMessagesToPersist(payload);
+                        persistMessagesService.requestMessagesToPersist(payload).subscribe();
                     })
                     .filter(x -> !x.equals(message.getValue().getSender()))
                     .map(target -> new PulsarMessageOutputEvent(

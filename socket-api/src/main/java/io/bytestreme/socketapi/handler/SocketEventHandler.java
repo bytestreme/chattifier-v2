@@ -85,7 +85,7 @@ public class SocketEventHandler implements WebSocketHandler {
                     try {
                         String jsonOut = objectMapper.writerWithDefaultPrettyPrinter()
                                 .writeValueAsString(pulsarEvent);
-                        eventOutput.setData(Base64.getEncoder().encode(jsonOut.getBytes()));
+                        eventOutput.setData(jsonOut.getBytes());
                         eventOutput.setType(PulsarTypeCodes.OutputEventType.MESSAGE_OUT);
                         return eventOutput;
                     } catch (JsonProcessingException e) {
